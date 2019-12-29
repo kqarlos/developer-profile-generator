@@ -1,0 +1,26 @@
+{
+  "name": "developer-profile-generator",
+  "version": "1.0.0",
+  "description": "Generates a developer Github profile",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kqarlos/developer-profile-generator.git"
+  },
+  "keywords": [],
+  "author": "Carlos Toledo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kqarlos/developer-profile-generator/issues"
+  },
+  "homepage": "https://github.com/kqarlos/developer-profile-generator#readme",
+  "dependencies": {
+    "inquirer": "^6.2.0",
+    "request": "^2.88.0",
+    "electron": "^7.1.7",
+    "electron-html-to": "^2.6.0"
+  }
+}
