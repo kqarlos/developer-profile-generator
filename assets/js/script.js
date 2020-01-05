@@ -7,7 +7,10 @@ const convertFactory = require('electron-html-to');
 
 var userName = "";
 var color = "";
-var htmlStr = `<!doctype html>
+var userInfo = {};
+var htmlStr =
+    `
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -24,14 +27,70 @@ var htmlStr = `<!doctype html>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" />
     <!-- My stylesheets -->
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">4
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
     <title>Developer Profile Generator</title>
 </head>
 
 <body>
 
-    <h1>Github Profile 2.0 </h1>
+    <div class="container">
+        <div class="row my-5">
+            <div class="col-12">
+                <div class="card-deck">
+                    <div class="card text-center" style="width: 18rem;">
+                        <div class="card-body">
+                            <img style="width: 15%;">
+                            <h5 class="card-title" id="name"></h5>
+                            <p class="card-text">
+                                <i class="fas fa-map-marker-alt"></i> <a id="location">Location</a>
+                                <i class="fab fa-github-alt"></i> <a id="githubLink">Github</a>
+                                <i class="fas fa-blog"></i> <a id="blogLink">Blog</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card-deck">
+                    <div class="card text-center" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Public Repositories</h5>
+                            <p class="card-text" id="nOfRepos"></p>
+                        </div>
+                    </div>
+
+                    <div class="card text-center" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Followers</h5>
+                            <p class="card-text" id="nOfFollowers"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pt-5">
+            <div class="col-12">
+                <div class="card-deck">
+                    <div class="card text-center" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Github Stars</h5>
+                            <p class="card-text" id="nOfStars"></p>
+                        </div>
+                    </div>
+
+                    <div class="card text-center" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Following</h5>
+                            <p class="card-text" id="nFollowing"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- jQuery JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -72,14 +131,19 @@ function start() {
         queryURL += userName;
 
         axios.get(queryURL).then(function (response) {
-            console.log(response.data);
-            var name = response.data.name;
-            var location = response.data.location;
-            var githubLink = response.data.html_url;
-            var nOfRepos = response.data.public_repos;
-            var nOfFollowers = response.data.followers;
-            var nFollowing = response.data.following;
-            var blogLink = rasponse.data.blog;
+            // console.log(response.data);
+            userInfo = {
+                name: response.data.name,
+                location: response.data.location,
+                githubLink: response.data.html_url,
+                nOfRepos: response.data.public_repos,
+                nOfFollowers: response.data.followers,
+                nFollowing: response.data.following,
+                blogLink: response.data.blog,
+                nOfStars: getNumberOfStars(response.data.repos_url),
+                image: response.data.avatar_url,
+            }
+            console.log(userInfo);
             generateHTML();
         }).catch(function (error) {
             if (error.response) {
@@ -110,8 +174,12 @@ function generateHTML() {
         if (err) throw err;
         // success case, the file was saved
         console.log('HTML generated!');
+        fillHTML();
         generatePDF();
     });
+}
+
+function fillHTML() {
 
 }
 
@@ -135,7 +203,34 @@ function generatePDF() {
     });
 }
 
+function getNumberOfStars(repos_url) {
+    var count = 0;
+    axios.get(repos_url).then(function (response) {
+        response.data.forEach(element => {
+            count += element.stargazers_count;
+        });
+        // console.log("Star count: " + count);
+        return count;
+    }).catch(function (error) {
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            console.log("---------------Data---------------");
+            console.log(error.response.data);
+            console.log("---------------Status---------------");
+            console.log(error.response.status);
+            console.log("---------------Status---------------");
+            console.log(error.response.headers);
+        } else if (error.request) {
+            // The request was made but no response was received
+            console.log(error.request);
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log("Error", error.message);
+        }
+        console.log(error.config);
+    });
 
+}
 start();
 
 
