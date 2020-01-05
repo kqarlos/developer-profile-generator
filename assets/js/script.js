@@ -6,7 +6,6 @@ const fs = require('fs');
 const convertFactory = require('electron-html-to');
 
 var userName = "";
-var color = "";
 var userInfo = {};
 var htmlStr =
     `
@@ -35,17 +34,17 @@ var htmlStr =
 <body>
 
     <div class="container">
-        <div class="row my-5">
+        <div class="row my-5 justify-content-center">
             <div class="col-12">
                 <div class="card-deck">
                     <div class="card text-center" style="width: 18rem;">
                         <div class="card-body">
-                            <img style="width: 15%;">
+                            <img class="pb-2" style="width: 15%;" id="pImage">
                             <h5 class="card-title" id="name"></h5>
                             <p class="card-text">
-                                <i class="fas fa-map-marker-alt"></i> <a id="location">Location</a>
-                                <i class="fab fa-github-alt"></i> <a id="githubLink">Github</a>
-                                <i class="fas fa-blog"></i> <a id="blogLink">Blog</a>
+                                <i class="fas fa-map-marker-alt"></i> <a id="location"></a>
+                                <i class="ml-4 fab fa-github-alt"></i> <a id="githubLink">Github</a>
+                                <i class="ml-4 fas fa-blog"></i> <a id="blogLink">Blog</a>
                             </p>
                         </div>
                     </div>
@@ -101,7 +100,7 @@ var htmlStr =
     <!-- Moment.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <!-- My JavaScript -->
-    <script src="assets/js/script.js"></script>
+    <script src="script.js"></script>
 
 </body>
 
@@ -127,7 +126,6 @@ function start() {
     ]).then(function (unserInput) {
 
         userName = unserInput.userName
-        color = unserInput.color;
         queryURL += userName;
 
         axios.get(queryURL).then(function (response) {
@@ -141,9 +139,10 @@ function start() {
                 nFollowing: response.data.following,
                 blogLink: response.data.blog,
                 nOfStars: getNumberOfStars(response.data.repos_url),
-                image: response.data.avatar_url,
+                pImage: response.data.avatar_url,
+                favoriteColor: unserInput.color
             }
-            console.log(userInfo);
+            // console.log(userInfo);
             generateHTML();
         }).catch(function (error) {
             if (error.response) {
@@ -167,19 +166,30 @@ function start() {
 }
 
 function generateHTML() {
-
+    fillHTML();
     // write to a new HTML file
     fs.writeFile('index3.html', htmlStr, (err) => {
         // throws an error, you could also catch it here
         if (err) throw err;
         // success case, the file was saved
         console.log('HTML generated!');
-        fillHTML();
         generatePDF();
     });
 }
 
 function fillHTML() {
+    console.log(userInfo);
+    htmlStr = htmlStr.split(`id="pImage"`).join(`id="pImage" src="` + userInfo.pImage + `"`);
+    htmlStr = htmlStr.split(`id="name">`).join(`id="name">` + userInfo.name);
+    htmlStr = htmlStr.split(`id="location">`).join(`id="location">` + userInfo.location);
+    htmlStr = htmlStr.split(`id="githubLink"`).join(`id="githubLink" href="` + userInfo.githubLink + `"`);
+    htmlStr = htmlStr.split(`id="blogLink"`).join(`id="blogLink" href="` + userInfo.blogLink + `"`);
+    htmlStr = htmlStr.split(`id="nOfRepos">`).join(`id="nOfRepos">` + userInfo.nOfRepos);
+    htmlStr = htmlStr.split(`id="githubLink">`).join(`id="githubLink">` + userInfo.githubLink);
+    htmlStr = htmlStr.split(`id="nOfFollowers">`).join(`id="nOfFollowers">` + userInfo.nOfFollowers);
+    htmlStr = htmlStr.split(`id="nOfStars">`).join(`id="nOfStars">` + userInfo.nOfStars);
+    htmlStr = htmlStr.split(`id="nFollowing">`).join(`id="nFollowing">` + userInfo.nFollowing);
+    htmlStr = htmlStr.split(`style="`).join(`style="background-color: ` + userInfo.color + "; ");
 
 }
 
@@ -231,6 +241,11 @@ function getNumberOfStars(repos_url) {
     });
 
 }
+
 start();
 
 
+// $(document).ready(function(){ 
+//     $("#name").text("Carlos");
+
+// });
