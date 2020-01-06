@@ -130,20 +130,24 @@ function start() {
 
         axios.get(queryURL).then(function (response) {
             // console.log(response.data);
-            userInfo = {
-                name: response.data.name,
-                location: response.data.location,
-                githubLink: response.data.html_url,
-                nOfRepos: response.data.public_repos,
-                nOfFollowers: response.data.followers,
-                nFollowing: response.data.following,
-                blogLink: response.data.blog,
-                nOfStars: getNumberOfStars(response.data.repos_url),
-                pImage: response.data.avatar_url,
-                favoriteColor: unserInput.color
-            }
-            // console.log(userInfo);
-            generateHTML();
+            getNumberOfStars("https://api.github.com/users/kqarlos/repos").then(function (stars) {
+                userInfo = {
+                    name: response.data.name,
+                    location: response.data.location,
+                    githubLink: response.data.html_url,
+                    nOfRepos: response.data.public_repos,
+                    nOfFollowers: response.data.followers,
+                    nFollowing: response.data.following,
+                    blogLink: response.data.blog,
+                    nOfStars: stars,
+                    pImage: response.data.avatar_url,
+                    favoriteColor: unserInput.color
+                }
+                console.log(userInfo);
+                generateHTML();
+            }).catch(function (err) {
+                console.log(err);
+            });
         }).catch(function (error) {
             if (error.response) {
                 // The request was made and the server responded with a status code
@@ -189,7 +193,7 @@ function fillHTML() {
     htmlStr = htmlStr.split(`id="nOfFollowers">`).join(`id="nOfFollowers">` + userInfo.nOfFollowers);
     htmlStr = htmlStr.split(`id="nOfStars">`).join(`id="nOfStars">` + userInfo.nOfStars);
     htmlStr = htmlStr.split(`id="nFollowing">`).join(`id="nFollowing">` + userInfo.nFollowing);
-    htmlStr = htmlStr.split(`style="`).join(`style="background-color: ` + userInfo.color + "; ");
+    htmlStr = htmlStr.split(`style="`).join(`style="background-color: ` + userInfo.favoriteColor + "; ");
 
 }
 
@@ -214,32 +218,34 @@ function generatePDF() {
 }
 
 function getNumberOfStars(repos_url) {
-    var count = 0;
-    axios.get(repos_url).then(function (response) {
-        response.data.forEach(element => {
-            count += element.stargazers_count;
-        });
-        // console.log("Star count: " + count);
-        return count;
-    }).catch(function (error) {
-        if (error.response) {
-            // The request was made and the server responded with a status code
-            console.log("---------------Data---------------");
-            console.log(error.response.data);
-            console.log("---------------Status---------------");
-            console.log(error.response.status);
-            console.log("---------------Status---------------");
-            console.log(error.response.headers);
-        } else if (error.request) {
-            // The request was made but no response was received
-            console.log(error.request);
-        } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log("Error", error.message);
-        }
-        console.log(error.config);
-    });
+    return new Promise(function (resolve, reject) {
+        if (repos_url == null) return reject(Error("Invalid URL!"));
 
+        var count = 0;
+        axios.get(repos_url).then(function (response) {
+            response.data.forEach(element => {
+                count += element.stargazers_count;
+            });
+            resolve(count);
+        }).catch(function (error) {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                console.log("---------------Data---------------");
+                console.log(error.response.data);
+                console.log("---------------Status---------------");
+                console.log(error.response.status);
+                console.log("---------------Status---------------");
+                console.log(error.response.headers);
+            } else if (error.request) {
+                // The request was made but no response was received
+                console.log(error.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log("Error", error.message);
+            }
+            console.log(error.config);
+        });
+    });
 }
 
 start();
