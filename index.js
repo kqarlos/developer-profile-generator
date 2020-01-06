@@ -172,7 +172,7 @@ function start() {
 function generateHTML() {
     fillHTML();
     // write to a new HTML file
-    fs.writeFile('index3.html', htmlStr, (err) => {
+    fs.writeFile('index.html', htmlStr, (err) => {
         // throws an error, you could also catch it here
         if (err) throw err;
         // success case, the file was saved
@@ -199,7 +199,7 @@ function fillHTML() {
 
 function generatePDF() {
 
-    fs.readFile('index3.html', 'utf8', (err, htmlString) => {
+    fs.readFile('index.html', 'utf8', (err, htmlString) => {
         // add local path in case your HTML has relative paths
         //   htmlString = htmlString.replace(/href="|src="/g, match => {
         //      return match + 'file://path/to/you/base/public/directory';
