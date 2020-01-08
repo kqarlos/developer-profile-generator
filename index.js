@@ -10,6 +10,33 @@ var userInfo = {};
 var htmlStr = "";
 var queryURL = "https://api.github.com/users/";
 
+const colors = {
+    green: {
+        wrapperBackground: "#E6E1C3",
+        cardBackground: "#C1C72C",
+        headerColor: "black",
+        photoBorderColor: "#black"
+    },
+    blue: {
+        wrapperBackground: "#5F64D3",
+        cardBackground: "#26175A",
+        headerColor: "white",
+        photoBorderColor: "#73448C"
+    },
+    pink: {
+        wrapperBackground: "#879CDF",
+        cardBackground: "#FF8374",
+        headerColor: "white",
+        photoBorderColor: "#FEE24C"
+    },
+    red: {
+        wrapperBackground: "#DE9967",
+        cardBackground: "#870603",
+        headerColor: "white",
+        photoBorderColor: "white"
+    }
+};
+
 
 function start() {
 
@@ -43,18 +70,8 @@ function start() {
                     blogLink: response.data.blog,
                     nOfStars: stars,
                     pImage: response.data.avatar_url,
-                    backgroundColor: unserInput.color,
+                    favoriteColor: unserInput.color,
                     bio: response.data.bio
-                }
-                switch (this.backgroundColor) {
-                    case "green":
-                        userInfo.cardBackground = "rgb(70, 168, 144)";
-                        break;
-                    case "yellow":
-                        userInfo.cardBackground = "rgb(70, 168, 144)";
-                        break;
-                    default:
-                        userInfo.cardBackground = "rgb(70, 168, 144)";
                 }
 
                 console.log(userInfo);
@@ -121,19 +138,19 @@ function fillHTML() {
 
     <style>
         .cardBack {
-            background-color: ${userInfo.cardBackground} !important;
+            background-color: ${colors[userInfo.favoriteColor].cardBackground} !important;
             -webkit-print-color-adjust: exact;
             width: 18rem;
         }
 
         .container {
-            background-color: ${userInfo.backgroundColor} !important;
+            background-color: ${colors[userInfo.favoriteColor].wrapperBackground} !important;
             -webkit-print-color-adjust: exact;
         }
 
         a,
         a:hover {
-            text-decoration: none;
+            text-decoration: none !important;
             color: white;
         }
 
@@ -141,7 +158,7 @@ function fillHTML() {
             position: absolute;
             top: -50px;
             left: calc(50% - 82.5px);
-            border: 3px solid white;
+            border: 3px solid ${colors[userInfo.favoriteColor].photoBorderColor};
             border-radius: 25px;
         }
 
@@ -158,8 +175,8 @@ function fillHTML() {
             <div class="col-10">
                 <div class="card-deck">
                     <div class="card text-center cardBack">
-                        <div class="card-body">
-                            <img style="width: 18%;" src="${userInfo.pImage}">
+                        <div class="card-body pt-5">
+                            <img style="width: 21%;" src="${userInfo.pImage}">
                             <h5 class="card-title pt-5 mb-0 mt-5 display-4 text-white">Welcome! My name is ${userInfo.name}.</h5>
                             <h5 class="card-title h4 text-white">&lt;Web Developer&gt;</h5>
 
