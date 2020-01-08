@@ -45,8 +45,20 @@ function start() {
                     blogLink: response.data.blog,
                     nOfStars: stars,
                     pImage: response.data.avatar_url,
-                    favoriteColor: unserInput.color
+                    backgroundColor: unserInput.color,
+                    bio: response.data.bio
                 }
+                switch (this.backgroundColor) {
+                    case "green":
+                        userInfo.cardBackground = "rgb(70, 168, 144)";
+                        break;
+                    case "yellow":
+                        userInfo.cardBackground = "rgb(70, 168, 144)";
+                        break;
+                    default:
+                        userInfo.cardBackground = "rgb(70, 168, 144)";
+                }
+
                 console.log(userInfo);
                 generateHTML1();
             }).catch(function (err) {
@@ -89,6 +101,7 @@ function fillHTML() {
     console.log(userInfo);
     htmlStr =
         `
+
 <!doctype html>
 <html lang="en">
 
@@ -108,66 +121,97 @@ function fillHTML() {
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
+    <style>
+        .cardBack {
+            background-color: ${userInfo.cardBackground} !important;
+            -webkit-print-color-adjust: exact;
+            width: 18rem;
+        }
+
+        .container {
+            background-color: ${userInfo.backgroundColor} !important;
+            -webkit-print-color-adjust: exact;
+        }
+
+        a,
+        a:hover {
+            text-decoration: none;
+            color: white;
+        }
+    </style>
+
     <title>Developer Profile Generator</title>
 </head>
 
 <body>
 
-    <div class="container">
+    <div class="container my-3 py-3">
         <div class="row my-5 justify-content-center">
-            <div class="col-12">
+            <div class="col-1"></div>
+            <div class="col-10">
                 <div class="card-deck">
-                    <div class="card text-center" style="background-color: ${userInfo.favoriteColor} !important; -webkit-print-color-adjust: exact; width: 18rem;">
+                    <div class="card text-center cardBack">
                         <div class="card-body">
-                            <img class="pb-2" style="width: 15%;" id="pImage" src="${userInfo.pImage}">
-                            <h5 class="card-title" id="name">${userInfo.name}</h5>
-                            <p class="card-text">
-                                <i class="fas fa-map-marker-alt"></i> <a id="location">${userInfo.location}</a>
-                                <i class="ml-4 fab fa-github-alt"></i> <a id="githubLink" href="${userInfo.githubLink}">Github</a>
-                                <i class="ml-4 fas fa-blog"></i> <a id="blogLink" href="${userInfo.blogLink}">Blog</a>
+                            <img class="pb-2" style="width: 18%;" src="${userInfo.pImage}">
+                            <h5 class="card-title display-4 text-white">Welcome! My name is ${userInfo.name}.</h5>
+                            <h5 class="card-title h4 text-white">&lt;Web Developer&gt;</h5>
+
+                            <p class="card-text h4">
+                                <i class="fas fa-map-marker-alt"></i> <a
+                                    href="https://www.google.com/maps/place/${userInfo.location}" target="_blank">${userInfo.location}</a>
+                                <i class="ml-4 fab fa-github-alt"></i> <a href="${userInfo.githubLink}" target="_blank">Github</a>
+                                <i class="ml-4 fas fa-blog"></i> <a href="${userInfo.blogLink}" target="_blank">Blog</a>
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-1"></div>
         </div>
-        <div class="row">
-            <div class="col-12">
+
+        <h5 class="mb-5 text-white h3 text-center">${userInfo.bio}</h5>
+
+        <div class="row text-white">
+            <div class="col-2"></div>
+            <div class="col-8">
                 <div class="card-deck">
-                    <div class="card text-center" style="background-color: ${userInfo.favoriteColor} !important; -webkit-print-color-adjust: exact; width: 18rem;">
+                    <div class="card text-center cardBack">
                         <div class="card-body">
-                            <h5 class="card-title">Public Repositories</h5>
-                            <p class="card-text" id="nOfRepos">${userInfo.nOfStars}</p>
+                            <h5 class="card-title h4">Public Repositories</h5>
+                            <p class="card-text h4">${userInfo.nOfRepos}</p>
                         </div>
                     </div>
 
-                    <div class="card text-center" style="background-color: ${userInfo.favoriteColor} !important; -webkit-print-color-adjust: exact; width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">Followers</h5>
-                            <p class="card-text" id="nOfFollowers">${userInfo.nOfFollowers}</p>
+                    <div class="card text-center cardBack">
+                        <div class=" card-body">
+                            <h5 class="card-title h4">Followers</h5>
+                            <p class="card-text h4">${userInfo.nOfFollowers}</p>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-2"></div>
         </div>
-        <div class="row pt-5">
-            <div class="col-12">
+        <div class="row py-5 text-white">
+            <div class="col-1"></div>
+            <div class="col-10">
                 <div class="card-deck">
-                    <div class="card text-center" style="background-color: ${userInfo.favoriteColor} !important; -webkit-print-color-adjust: exact; width: 18rem;">
+                    <div class="card text-center cardBack">
                         <div class="card-body">
-                            <h5 class="card-title">Github Stars</h5>
-                            <p class="card-text" id="nOfStars">${userInfo.nOfStars}</p>
+                            <h5 class="card-title h4">Github Stars</h5>
+                            <p class="card-text h4">${userInfo.nOfStars}</p>
                         </div>
                     </div>
 
-                    <div class="card text-center" style="background-color: ${userInfo.favoriteColor} !important; -webkit-print-color-adjust: exact; width: 18rem;">
+                    <div class="card text-center cardBack">
                         <div class="card-body">
-                            <h5 class="card-title">Following</h5>
-                            <p class="card-text" id="nFollowing">${userInfo.nFollowing}</p>
+                            <h5 class="card-title h4">Following</h5>
+                            <p class="card-text h4">${userInfo.nFollowing}</p>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-1"></div>
         </div>
     </div>
 
@@ -184,7 +228,11 @@ function fillHTML() {
 
 </body>
 
-</html>`;
+</html>
+
+
+
+`;
 }
 
 function generatePDF() {
@@ -201,7 +249,7 @@ function generatePDF() {
             console.log("PDF Generated!");
         });
     });
-    
+
 }
 
 function getNumberOfStars(repos_url) {
