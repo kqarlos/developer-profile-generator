@@ -1,4 +1,6 @@
-# 
+# Developer Profile Generator
+
+Generates a Github's user profile in PDF format given a Github's username and a chosen favorite color.
 
 ## Getting Started
 
