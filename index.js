@@ -136,6 +136,15 @@ function fillHTML() {
             text-decoration: none;
             color: white;
         }
+
+        img {
+            position: absolute;
+            top: -50px;
+            left: calc(50% - 82.5px);
+            border: 3px solid white;
+            border-radius: 25px;
+        }
+
     </style>
 
     <title>Developer Profile Generator</title>
@@ -143,15 +152,15 @@ function fillHTML() {
 
 <body>
 
-    <div class="container my-3 py-3">
+    <div class="container my-3 pt-5 pb-3">
         <div class="row my-5 justify-content-center">
             <div class="col-1"></div>
             <div class="col-10">
                 <div class="card-deck">
                     <div class="card text-center cardBack">
                         <div class="card-body">
-                            <img class="pb-2" style="width: 18%;" src="${userInfo.pImage}">
-                            <h5 class="card-title display-4 text-white">Welcome! My name is ${userInfo.name}.</h5>
+                            <img style="width: 18%;" src="${userInfo.pImage}">
+                            <h5 class="card-title pt-5 mb-0 mt-5 display-4 text-white">Welcome! My name is ${userInfo.name}.</h5>
                             <h5 class="card-title h4 text-white">&lt;Web Developer&gt;</h5>
 
                             <p class="card-text h4">
