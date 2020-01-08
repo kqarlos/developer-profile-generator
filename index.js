@@ -1,11 +1,9 @@
-var request = require("request");
 var inquirer = require("inquirer");
 var electron = require("electron");
 var axios = require("axios");
 const fs = require('fs');
 const convertFactory = require('electron-html-to');
-const pdf = require('html-pdf');
-const generateHTML = require('electron-prebuilt');
+
 
 var userName = "";
 var userInfo = {};
