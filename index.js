@@ -4,11 +4,91 @@ var electron = require("electron");
 var axios = require("axios");
 const fs = require('fs');
 const convertFactory = require('electron-html-to');
+const pdf = require('html-pdf');
+const generateHTML = require('electron-prebuilt');
 
 var userName = "";
 var userInfo = {};
-var htmlStr =
-    `
+var htmlStr = "";
+var queryURL = "https://api.github.com/users/";
+
+
+function start() {
+
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "What is your Github username ",
+            name: "userName"
+        },
+        {
+            type: "input",
+            message: "What is your favorite color? ",
+            name: "color"
+        },
+
+    ]).then(function (unserInput) {
+
+        userName = unserInput.userName
+        queryURL += userName;
+
+        axios.get(queryURL).then(function (response) {
+            // console.log(response.data);
+            getNumberOfStars(queryURL + "/repos").then(function (stars) {
+                userInfo = {
+                    name: response.data.name,
+                    location: response.data.location,
+                    githubLink: response.data.html_url,
+                    nOfRepos: response.data.public_repos,
+                    nOfFollowers: response.data.followers,
+                    nFollowing: response.data.following,
+                    blogLink: response.data.blog,
+                    nOfStars: stars,
+                    pImage: response.data.avatar_url,
+                    favoriteColor: unserInput.color
+                }
+                console.log(userInfo);
+                generateHTML1();
+            }).catch(function (err) {
+                console.log(err);
+            });
+        }).catch(function (error) {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                console.log("---------------Data---------------");
+                console.log(error.response.data);
+                console.log("---------------Status---------------");
+                console.log(error.response.status);
+                console.log("---------------Status---------------");
+                console.log(error.response.headers);
+            } else if (error.request) {
+                // The request was made but no response was received
+                console.log(error.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log("Error", error.message);
+            }
+            console.log(error.config);
+        });
+    })
+}
+
+function generateHTML1() {
+    fillHTML();
+    // write to a new HTML file
+    fs.writeFile('index.html', htmlStr, (err) => {
+        // throws an error, you could also catch it here
+        if (err) throw err;
+        // success case, the file was saved
+        console.log('HTML generated!');
+        generatePDF();
+    });
+}
+
+function fillHTML() {
+    console.log(userInfo);
+    htmlStr =
+        `
 <!doctype html>
 <html lang="en">
 
@@ -37,14 +117,14 @@ var htmlStr =
         <div class="row my-5 justify-content-center">
             <div class="col-12">
                 <div class="card-deck">
-                    <div class="card text-center" style="width: 18rem;">
+                    <div class="card text-center" style="background-color: ${userInfo.favoriteColor} !important; -webkit-print-color-adjust: exact; width: 18rem;">
                         <div class="card-body">
-                            <img class="pb-2" style="width: 15%;" id="pImage">
-                            <h5 class="card-title" id="name"></h5>
+                            <img class="pb-2" style="width: 15%;" id="pImage" src="${userInfo.pImage}">
+                            <h5 class="card-title" id="name">${userInfo.name}</h5>
                             <p class="card-text">
-                                <i class="fas fa-map-marker-alt"></i> <a id="location"></a>
-                                <i class="ml-4 fab fa-github-alt"></i> <a id="githubLink">Github</a>
-                                <i class="ml-4 fas fa-blog"></i> <a id="blogLink">Blog</a>
+                                <i class="fas fa-map-marker-alt"></i> <a id="location">${userInfo.location}</a>
+                                <i class="ml-4 fab fa-github-alt"></i> <a id="githubLink" href="${userInfo.githubLink}">Github</a>
+                                <i class="ml-4 fas fa-blog"></i> <a id="blogLink" href="${userInfo.blogLink}">Blog</a>
                             </p>
                         </div>
                     </div>
@@ -54,17 +134,17 @@ var htmlStr =
         <div class="row">
             <div class="col-12">
                 <div class="card-deck">
-                    <div class="card text-center" style="width: 18rem;">
+                    <div class="card text-center" style="background-color: ${userInfo.favoriteColor} !important; -webkit-print-color-adjust: exact; width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">Public Repositories</h5>
-                            <p class="card-text" id="nOfRepos"></p>
+                            <p class="card-text" id="nOfRepos">${userInfo.nOfStars}</p>
                         </div>
                     </div>
 
-                    <div class="card text-center" style="width: 18rem;">
+                    <div class="card text-center" style="background-color: ${userInfo.favoriteColor} !important; -webkit-print-color-adjust: exact; width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">Followers</h5>
-                            <p class="card-text" id="nOfFollowers"></p>
+                            <p class="card-text" id="nOfFollowers">${userInfo.nOfFollowers}</p>
                         </div>
                     </div>
                 </div>
@@ -73,17 +153,17 @@ var htmlStr =
         <div class="row pt-5">
             <div class="col-12">
                 <div class="card-deck">
-                    <div class="card text-center" style="width: 18rem;">
+                    <div class="card text-center" style="background-color: ${userInfo.favoriteColor} !important; -webkit-print-color-adjust: exact; width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">Github Stars</h5>
-                            <p class="card-text" id="nOfStars"></p>
+                            <p class="card-text" id="nOfStars">${userInfo.nOfStars}</p>
                         </div>
                     </div>
 
-                    <div class="card text-center" style="width: 18rem;">
+                    <div class="card text-center" style="background-color: ${userInfo.favoriteColor} !important; -webkit-print-color-adjust: exact; width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">Following</h5>
-                            <p class="card-text" id="nFollowing"></p>
+                            <p class="card-text" id="nFollowing">${userInfo.nFollowing}</p>
                         </div>
                     </div>
                 </div>
@@ -105,116 +185,23 @@ var htmlStr =
 </body>
 
 </html>`;
-
-var queryURL = "https://api.github.com/users/";
-
-
-function start() {
-
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "What is your Github username ",
-            name: "userName"
-        },
-        {
-            type: "input",
-            message: "What is your favorite color? ",
-            name: "color"
-        },
-
-    ]).then(function (unserInput) {
-
-        userName = unserInput.userName
-        queryURL += userName;
-
-        axios.get(queryURL).then(function (response) {
-            // console.log(response.data);
-            getNumberOfStars("https://api.github.com/users/kqarlos/repos").then(function (stars) {
-                userInfo = {
-                    name: response.data.name,
-                    location: response.data.location,
-                    githubLink: response.data.html_url,
-                    nOfRepos: response.data.public_repos,
-                    nOfFollowers: response.data.followers,
-                    nFollowing: response.data.following,
-                    blogLink: response.data.blog,
-                    nOfStars: stars,
-                    pImage: response.data.avatar_url,
-                    favoriteColor: unserInput.color
-                }
-                console.log(userInfo);
-                generateHTML();
-            }).catch(function (err) {
-                console.log(err);
-            });
-        }).catch(function (error) {
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                console.log("---------------Data---------------");
-                console.log(error.response.data);
-                console.log("---------------Status---------------");
-                console.log(error.response.status);
-                console.log("---------------Status---------------");
-                console.log(error.response.headers);
-            } else if (error.request) {
-                // The request was made but no response was received
-                console.log(error.request);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log("Error", error.message);
-            }
-            console.log(error.config);
-        });
-    })
-}
-
-function generateHTML() {
-    fillHTML();
-    // write to a new HTML file
-    fs.writeFile('index.html', htmlStr, (err) => {
-        // throws an error, you could also catch it here
-        if (err) throw err;
-        // success case, the file was saved
-        console.log('HTML generated!');
-        generatePDF();
-    });
-}
-
-function fillHTML() {
-    console.log(userInfo);
-    htmlStr = htmlStr.split(`id="pImage"`).join(`id="pImage" src="` + userInfo.pImage + `"`);
-    htmlStr = htmlStr.split(`id="name">`).join(`id="name">` + userInfo.name);
-    htmlStr = htmlStr.split(`id="location">`).join(`id="location">` + userInfo.location);
-    htmlStr = htmlStr.split(`id="githubLink"`).join(`id="githubLink" href="` + userInfo.githubLink + `"`);
-    htmlStr = htmlStr.split(`id="blogLink"`).join(`id="blogLink" href="` + userInfo.blogLink + `"`);
-    htmlStr = htmlStr.split(`id="nOfRepos">`).join(`id="nOfRepos">` + userInfo.nOfRepos);
-    htmlStr = htmlStr.split(`id="githubLink">`).join(`id="githubLink">` + userInfo.githubLink);
-    htmlStr = htmlStr.split(`id="nOfFollowers">`).join(`id="nOfFollowers">` + userInfo.nOfFollowers);
-    htmlStr = htmlStr.split(`id="nOfStars">`).join(`id="nOfStars">` + userInfo.nOfStars);
-    htmlStr = htmlStr.split(`id="nFollowing">`).join(`id="nFollowing">` + userInfo.nFollowing);
-    htmlStr = htmlStr.split(`style="`).join(`style="background-color: ` + userInfo.favoriteColor + "; ");
-
 }
 
 function generatePDF() {
 
     fs.readFile('index.html', 'utf8', (err, htmlString) => {
-        // add local path in case your HTML has relative paths
-        //   htmlString = htmlString.replace(/href="|src="/g, match => {
-        //      return match + 'file://path/to/you/base/public/directory';
-        //   });
         const conversion = convertFactory({
             converterPath: convertFactory.converters.PDF,
             allowLocalFilesAccess: true
         });
         conversion({ html: htmlString }, (err, result) => {
             if (err) return console.error(err);
-            result.stream.pipe(fs.createWriteStream('profile.pdf'));
+            result.stream.pipe(fs.createWriteStream('profile.pdf', { mode: "0766", flag: "w" }));
             conversion.kill(); // necessary if you use the electron-server strategy, see bellow for details
             console.log("PDF Generated!");
         });
     });
+    
 }
 
 function getNumberOfStars(repos_url) {
