@@ -6,9 +6,14 @@ This application is compatible with the most commonly used web browsers.
 
 ## Site Pictures
 
-1. 
+1. Generated PDF with username: _kqarlos_ and color choice: _red_
 
 ![Site](assets/images/profile.png)
+
+2. Command-line prompts with _inquirer_
+
+![Site](assets/images/inquirer.png)
+
 
 
 ## Code Snippets

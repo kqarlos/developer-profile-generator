@@ -12,32 +12,34 @@ var queryURL = "https://api.github.com/users/";
 
 const colors = {
     green: {
-        wrapperBackground: "#E6E1C3",
-        cardBackground: "#C1C72C",
-        headerColor: "black",
-        photoBorderColor: "#black"
+        wrapperBackground: "#c3e3c1",
+        cardBackground: "#7cd6d2",
+        headerColor: "white",
+        photoBorderColor: "#0c6b05"
     },
     blue: {
-        wrapperBackground: "#5F64D3",
-        cardBackground: "#26175A",
+        wrapperBackground: "#bfc9ff",
+        cardBackground: "#545f96",
         headerColor: "white",
-        photoBorderColor: "#73448C"
+        photoBorderColor: "#031266"
     },
     pink: {
-        wrapperBackground: "#879CDF",
-        cardBackground: "#FF8374",
+        wrapperBackground: "#ffd1f9",
+        cardBackground: "#e882c3",
         headerColor: "white",
-        photoBorderColor: "#FEE24C"
+        photoBorderColor: "#b00081"
     },
     red: {
-        wrapperBackground: "#DE9967",
-        cardBackground: "#870603",
+        wrapperBackground: "#f0c2c2",
+        cardBackground: "#ff4a4a",
         headerColor: "white",
-        photoBorderColor: "white"
+        photoBorderColor: "#b00000"
     }
 };
 
-
+//Prompts user for username and color
+//makes an axios call to get user data from Github's api
+//Populates userInfo object
 function start() {
 
     inquirer.prompt([
@@ -47,9 +49,10 @@ function start() {
             name: "userName"
         },
         {
-            type: "input",
+            type: "list",
             message: "What is your favorite color? ",
-            name: "color"
+            name: "color",
+            choices: ["green", "blue", "pink", "red"]
         },
 
     ]).then(function (unserInput) {
@@ -75,7 +78,7 @@ function start() {
                 }
 
                 console.log(userInfo);
-                generateHTML1();
+                generateHTML();
             }).catch(function (err) {
                 console.log(err);
             });
@@ -100,7 +103,8 @@ function start() {
     })
 }
 
-function generateHTML1() {
+//generates an HTML file by calling on fillHTML to get a complete html string and with fs.writeFile
+function generateHTML() {
     fillHTML();
     // write to a new HTML file
     fs.writeFile('index.html', htmlStr, (err) => {
@@ -112,6 +116,7 @@ function generateHTML1() {
     });
 }
 
+//fills htmlStr by declaring a string literal that refereces that userInfo and colors objects
 function fillHTML() {
     console.log(userInfo);
     htmlStr =
@@ -158,8 +163,12 @@ function fillHTML() {
             position: absolute;
             top: -50px;
             left: calc(50% - 82.5px);
-            border: 3px solid ${colors[userInfo.favoriteColor].photoBorderColor};
+            border: 5px solid ${colors[userInfo.favoriteColor].photoBorderColor};
             border-radius: 25px;
+        }
+
+        #bio {
+            color: ${colors[userInfo.favoriteColor].headerColor};
         }
 
     </style>
@@ -193,7 +202,7 @@ function fillHTML() {
             <div class="col-1"></div>
         </div>
 
-        <h5 class="mb-5 text-white h3 text-center">${userInfo.bio}</h5>
+        <h5 class="mb-5 h3 text-center" id="bio">${userInfo.bio}</h5>
 
         <div class="row text-white">
             <div class="col-2"></div>
@@ -259,6 +268,7 @@ function fillHTML() {
 `;
 }
 
+//generates PDF file through electron-html-to
 function generatePDF() {
 
     fs.readFile('index.html', 'utf8', (err, htmlString) => {
@@ -276,6 +286,9 @@ function generatePDF() {
 
 }
 
+//Makes an Axios call to Github's api
+//Loops through all the repos to get total star count
+//Returns a promise
 function getNumberOfStars(repos_url) {
     return new Promise(function (resolve, reject) {
         if (repos_url == null) return reject(Error("Invalid URL!"));
