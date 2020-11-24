@@ -1,5 +1,4 @@
 var inquirer = require("inquirer");
-var electron = require("electron");
 var axios = require("axios");
 const fs = require('fs');
 const convertFactory = require('electron-html-to');
