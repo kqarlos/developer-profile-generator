@@ -16,14 +16,30 @@
     <img src="https://img.shields.io/github/followers/kqarlos?style=social" alt="Followers" />  
 </p>
 
+## Description
 
 Generates a Github's user profile in PDF format given a Github's username and a chosen favorite color.
 
-## Getting Started
+## Table of Contents
+
+* [Installation](#installation)
+* [Usage](#usage)
+    * [Screenshots](#screenshots)
+    * [Snippets](#snippets)
+* [Credits](#credits)
+* [License](#license)
+
+## Installation
 
 This application is compatible with the most commonly used web browsers.
 
-## Site Pictures
+<p align="center">
+    <a href="https://kqarlos.github.io/developer-profile-generator"><img src="https://img.shields.io/badge/-👉 See Sample Profile-success?style=for-the-badge"  alt="Live Site" /></a>
+</p>
+
+## Usage
+
+### Screenshots
 
 1. Generated PDF with username: _kqarlos_ and color choice: _red_
 
@@ -35,7 +51,7 @@ This application is compatible with the most commonly used web browsers.
 
 
 
-## Code Snippets
+### Snippets
 
 
 1. Promise and callback
@@ -90,32 +106,29 @@ function getNumberOfStars(repos_url) {
 ```
 * This function returns a promise. This is because inside this function there is an _axios.get()_ call that runs asynchronouslly. Returning apromise will ensure that whatever code follows this function call will execute only after this promise is resolved. This avoids issues such as referencing a variable that has not yet been set.
 
+## Credits 
 
-## Built With
+### Author
 
-* [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
-* [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
-* [Bootstrap](https://getbootstrap.com/)
-* [Javascript](https://www.javascript.com/)
-* [Moment.js](https://momentjs.com/docs/)
+- 💼 Carlos Toledo: [portfolio](https://professional-portfolio2020.herokuapp.com/)
+- :octocat: Github: [kqarlos](https://www.github.com/kqarlos)
+- LinkedIn: [carlos-toledo415](https://www.linkedin.com/in/carlos-toledo415/)
 
-## Deployed Link
+### Built With
 
-* [See Live Site](https://kqarlos.github.io/developer-profile-generator)
+</br>
+<p align="center">
+    <a href="https://developer.mozilla.org/en-US/docs/Web/HTML"><img src="https://img.shields.io/badge/-HTML-orange?style=for-the-badge"  alt="HMTL" /></a>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/CSS"><img src="https://img.shields.io/badge/-CSS-blue?style=for-the-badge" alt="CSS" /></a>
+    <a href="https://www.javascript.com/"><img src="https://img.shields.io/badge/-Javascript-yellow?style=for-the-badge" alt="Javascript" /></a>
+    <a href="https://getbootstrap.com/"><img src="https://img.shields.io/badge/-Bootstrap-blueviolet?style=for-the-badge" alt="Bootstrap" /></a>
+    <a href="https://handlebarsjs.com/"><img src="https://img.shields.io/badge/-Inquirer-orange?style=for-the-badge" alt="Inquirer" /></a>
 
-## Author
+</p>
 
- * **Carlos Toledo** 
+## License
 
-## Links
-
-- [Link to site repository](https://github.com/kqarlos/developer-profile-generator)
-- [Link to Github](https://www.github.com/kqarlos)
-- [Link to LinkedIn](https://www.linkedin.com/in/carlos-toledo415/)
-
-
-## Acknowledgments
-
-* [W3 Schools](https://www.w3schools.com/)
-* [Bootstrap components](https://getbootstrap.com/docs/4.4/components/navbar/)
-* [MDN Web Docs](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model)
+</br>
+<p align="center">
+    <img align="center" src="https://img.shields.io/github/license/kqarlos/developer-profile-generator?style=for-the-badge" alt="MIT license" />
+</p>
