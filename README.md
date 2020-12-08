@@ -1,5 +1,22 @@
 # Developer Profile Generator
 
+</br>
+<p align="center">
+    <img src="https://img.shields.io/github/languages/count/kqarlos/developer-profile-generator?style=for-the-badge" alt="Languages" />
+    <img src="https://img.shields.io/github/languages/top/kqarlos/developer-profile-generator?style=for-the-badge" alt="Top Language" />
+    <img src="https://img.shields.io/github/languages/code-size/kqarlos/developer-profile-generator?style=for-the-badge" alt="Code Size" />
+    <img src="https://img.shields.io/github/repo-size/kqarlos/developer-profile-generator?style=for-the-badge" alt="Repo Size" />   
+    <img src="https://img.shields.io/tokei/lines/github/kqarlos/developer-profile-generator?style=for-the-badge" alt="Total Lines" />
+    <img src="https://img.shields.io/github/package-json/dependency-version/kqarlos/developer-profile-generator/axios?style=for-the-badge" alt="Axios Version" />
+    <img src="https://img.shields.io/github/package-json/dependency-version/kqarlos/developer-profile-generator/electron?style=for-the-badge" alt="Electron Version" />
+    <img src="https://img.shields.io/github/package-json/dependency-version/kqarlos/developer-profile-generator/electron-html-to?style=for-the-badge" alt="Electron- html-to Version" />
+    <img src="https://img.shields.io/github/package-json/dependency-version/kqarlos/developer-profile-generator/inquirer?style=for-the-badge" alt="Inquirer Version" />
+    <img src="https://img.shields.io/github/last-commit/kqarlos/developer-profile-generator?style=for-the-badge" alt="Last Commit" />  
+    <img src="https://img.shields.io/github/issues/kqarlos/developer-profile-generator?style=for-the-badge" alt="Issues" />  
+    <img src="https://img.shields.io/github/followers/kqarlos?style=social" alt="Followers" />  
+</p>
+
+
 Generates a Github's user profile in PDF format given a Github's username and a chosen favorite color.
 
 ## Getting Started
