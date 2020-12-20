@@ -31,7 +31,10 @@ Generates a Github's user profile in PDF format given a Github's username and a 
 
 ## Installation
 
-This application is compatible with the most commonly used web browsers.
+  Install dependencies and start the application in the command line
+
+     npm i
+     node index.js
 
 <p align="center">
     <a href="https://kqarlos.github.io/developer-profile-generator"><img src="https://img.shields.io/badge/-👉 See Sample Profile-success?style=for-the-badge"  alt="Live Site" /></a>
