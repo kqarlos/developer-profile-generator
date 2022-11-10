@@ -19,7 +19,7 @@
   "homepage": "https://github.com/kqarlos/developer-profile-generator#readme",
   "dependencies": {
     "axios": "^0.26.1",
-    "electron": "^18.0.4",
+    "electron": "^18.3.7",
     "electron-html-to": "^2.6.0",
     "inquirer": "^8.2.2"
   }
